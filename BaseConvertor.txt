@@ -34,6 +34,27 @@
 # 1) Int divide by 100, 10 and 1
 # 2) Output a*base**2 + b*base + c
 
+# Some kind of status value is needed to check where to return to
+# after completing a function. Needs to store 10 jump locations 
+# so therefore 3 status values are required.
+
+# JUMP LOCATIONS
+
+# div flags format: xt or tx, 1st or 2nd
+# mult or sq format: xt or tx, sq or mult, 1st or 2nd
+
+# xt_div1 : 00X
+# xt_div2 : 01X
+# xt_sq   : 000
+# xt_mul1 : 011
+# xt_mul2 : 010
+
+# tx_sq   : 100
+# tx_div1 : 10X
+# tx_div2 : 11X
+# tx_mul1 : 111
+# tx_mul2 : 110
+
 # CODE BEGINS HERE #
 	IN
 	STO	x # Starting Base
@@ -53,13 +74,23 @@ mul	LDA	count
 	ADD	mulval
 	STO	total
 	B	mul
-endmul	LDA	status1
-	BZ	xtmul
-	LDA	status2
-	BZ	txmul_m
-	B	txmul_e
-xtmul	LDA	status2
-	BZ	xtmul_m
-	B	xtmul_e
+endmul	
 
 
+# Integer divison with remainder function
+div	LDA	n
+	SUB	divval
+	BRP	divloop
+		
+divloop	STO	n
+	LDA	count
+	ADD	001
+	STO	count
+	B	div
+
+status1	DAT	000
+status2	DAT	000
+status3	DAT	000
+n	DAT	000
+x	DAT	000
+y	DAT	000
