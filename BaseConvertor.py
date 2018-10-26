@@ -1,10 +1,3 @@
-def get_digits(integer):
-    a, integer = int_div(integer, 100)
-    b, integer = int_div(integer, 10)
-    c = integer
-
-    return a,b,c
-
 def int_div(integer, div):
     count = 0
     while integer - div >= 0:
@@ -24,11 +17,13 @@ def convert_base10_to_x(integer, base):
         return a*100 + b*10 + c
 
 def convert_x_to_base10(integer, base):
-    a,b,c = get_digits(integer)
+    a, integer = int_div(integer, 100)
+    b, integer = int_div(integer, 10)
+    c = integer
     return a*base**2 + b*base + c
 
 def convert_x_to_y(integer, x, y):
     temp = convert_x_to_base10(integer, x)
     return convert_base10_to_x(temp, y)
 
-print(convert_x_to_y(110, 6, 9))
+print(convert_x_to_y(110, 4, 10))
