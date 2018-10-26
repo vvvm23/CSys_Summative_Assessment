@@ -2,32 +2,64 @@
 # Computer Systems Summative Assessment Michaelmas Term
 # Little Man Computer Base Convertor
 
-# Functions required:
-# Multiply
+# PLAN BEGINS HERE #
+# Functions required: #
+
+# Multiply #
 # Integer Divide with remainder
 # Convert b10 to bX
 # Convert bX to b10
 
-# Algorithm MAIN:
+# Algorithm MAIN: #
 # 1) Input n, a, b
 # 2) Input n, a into bX to b10
 # 3) Input result, b into b10 to bX
 # 4) Output result
 
-# Algorithm MULT
+# Algorithm MULT #
 # 1) Add value to running total
 # 2) Repeat until count exceeds second value
 # 3) Output total
 
-# Algorithm INT DIV W REMAIN
+# Algorithm INT DIV W REMAIN #
 # 1) Repeatedly subtract by div and increment count
 # 2) Repeat until integer - div < 0
 # 3) Output count
 
-# Algorithm B10 TO BX
+# Algorithm BT TO BX #
 # 1) Int divide by base**2, base and 1
 # 2) Output a*100 + b*10 + c
 
-# Algorithm BX TO B10
+# Algorithm BX TO BT #
 # 1) Int divide by 100, 10 and 1
 # 2) Output a*base**2 + b*base + c
+
+# CODE BEGINS HERE #
+	IN
+	STO	x # Starting Base
+	IN
+	STO	y # Ending Base
+	IN
+	STO	n # 3 Digit Value
+
+	HLT	# End of program
+
+# Multiply Function
+mul	LDA	count
+	BZ	endmul
+	SUB	001
+	STO	count
+	LDA	total
+	ADD	mulval
+	STO	total
+	B	mul
+endmul	LDA	status1
+	BZ	xtmul
+	LDA	status2
+	BZ	txmul_m
+	B	txmul_e
+xtmul	LDA	status2
+	BZ	xtmul_m
+	B	xtmul_e
+
+
