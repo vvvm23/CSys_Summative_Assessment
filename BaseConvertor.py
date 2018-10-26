@@ -27,6 +27,8 @@ def convert_x_to_base10(integer, base):
     a,b,c = get_digits(integer)
     return a*base**2 + b*base + c
 
-x = 213; print(x)
-x = convert_base10_to_x(x, 9); print(x)
-x = convert_x_to_base10(x, 9); print(x)
+def convert_x_to_y(integer, x, y):
+    temp = convert_x_to_base10(integer, x)
+    return convert_base10_to_x(temp, y)
+
+print(convert_x_to_y(110, 6, 9))
