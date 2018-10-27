@@ -63,10 +63,77 @@
 	IN
 	STO	n # 3 Digit Value
 
+	LDA	100
+	STO	divval
+	BR	div
+xt_div1	LDA	count
+	STO	a
+	BR	div
+xt_div2	LDA	count
+	STO	b
+	LDA	n
+	STO	c
+
+	LDA	x
+	STO	count
+	STO	mulval
+	BR	mul
+xt_sq	LDA	total
+	STO	mulval
+	LDA	a
+	STO	count
+	BR	mul
+xt_mul1	LDA	total
+	STO	temp
+	LDA	b
+	STO	count
+	LDA	x
+	STO	mulval
+	BR	mul
+xt_mul2	LDA	total
+	ADD	temp
+	ADD	c
+	STO	n
+
+	LDA	y
+	STO	count
+	STO	mulval
+	BR	mul
+tx_sq	LDA	total
+	STO	divval
+	BR	div
+tx_div1	LDA	count
+	STO	a
+	LDA	y
+	STO	divval
+	BR	div
+tx_div2	LDA	count
+	STO	b
+	LDA	n
+	STO	c
+	LDA	100
+	STO	mulval
+	LDA	a
+	STO	count
+	BR	mul
+tx_mul1	LDA	total
+	STO	temp
+	LDA	b
+	STO	count
+	LDA	010
+	STO	mulval
+	BR	mul
+	LDA	total
+	ADD	temp
+	ADD	c
+	OUT	
+
 	HLT	# End of program
 
 # Multiply Function
-mul	LDA	count
+mul	LDA	000
+	STO	total	
+	LDA	count
 	BZ	endmul
 	SUB	001
 	STO	count
@@ -97,7 +164,7 @@ div	LDA	n
 	BRZ	xt_div
 	LDA	status2
 	BRZ	tx_div1
-	B	tx_div2
+	BR	tx_div2
 xt_div	LDA	status2
 	BRZ	xt_div1
 	BR	xt_div2
@@ -106,13 +173,23 @@ divloop	STO	n
 	LDA	count
 	ADD	001
 	STO	count
-	B	div
+	BR	div
 
+# Work on reducing number of variables thanks.
 status1	DAT	000
 status2	DAT	000
 status3	DAT	000
 n	DAT	000
 x	DAT	000
 y	DAT	000
-mulres	DAT	000
 count	DAT	000
+divval	DAT	000
+mulval	DAT	000
+total	DAT	000
+000	DAT	000
+001	DAT	001
+010	DAT	010
+100	DAT	100
+a	DAT	000
+b	DAT	000
+c	DAT	000
