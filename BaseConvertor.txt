@@ -74,14 +74,34 @@ mul	LDA	count
 	ADD	mulval
 	STO	total
 	B	mul
-endmul	
+endmul	LDA	status1
+	BRZ	xt_mult
+	LDA	status2
+	BRZ	tx_sq
+	LDA	status3
+	BRZ	tx_mult1
+	BR	tx_mult2
+xt_mult	LDA	status2
+	BRZ	xt_sq
+	LDA	status3
+	BRZ	xt_mult1
+	BR	xt_mult2
 
 
 # Integer divison with remainder function
+# n will be remainder, count will be int result
 div	LDA	n
 	SUB	divval
 	BRP	divloop
-		
+	LDA	status1
+	BRZ	xt_div
+	LDA	status2
+	BRZ	tx_div1
+	B	tx_div2
+xt_div	LDA	status2
+	BRZ	xt_div1
+	BR	xt_div2
+
 divloop	STO	n
 	LDA	count
 	ADD	001
@@ -94,3 +114,5 @@ status3	DAT	000
 n	DAT	000
 x	DAT	000
 y	DAT	000
+mulres	DAT	000
+count	DAT	000
