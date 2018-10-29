@@ -1,8 +1,30 @@
-n	IN
-	STO	n
+n	IN	# Possible change, store all instructions as DAT so supports multiple reruns.
+count	STO	n
 a	IN	
-	STO	a
+divval	STO	a
 b	IN
 	STO	b
 
 001	DAT	001 # HLT
+
+# INT DIV /w REMAINDER #
+div	LDA	n
+	SUB	divval
+	BRP	divcon
+eodiv	DAT	000
+divcon	STO	n
+	LDA	count
+	SUB	001
+	STO	count
+	BR	div
+
+# INT MULT #
+mul	LDA	count
+	BRZ	eomul
+	SUB	001
+	STO	count
+	LDA	temp
+	ADD	mulval
+	STO	temp
+	BR	mul
+eomul	DAT	000
