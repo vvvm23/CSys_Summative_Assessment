@@ -30,7 +30,6 @@ r3	LDA	r3
 	ADD	104
 	STO	eomul
 	BR	mul # d1 * base ** 2
-	LDA	temp
 	STO	temp2 # stores d1 * base ** 2 in temporary storage
 	LDA	ebase # load non square base
 	STO	divval
@@ -46,7 +45,6 @@ r5	LDA	r5
 	ADD	104
 	STO	eomul 
 	BR	mul # multiply d2 * base
-	LDA	temp
 	ADD	temp2 # add d1 * base ** 2
 	ADD	n # add d3
 	STO	n
@@ -63,7 +61,6 @@ r6	LDA	r6
 	ADD	104
 	STO	eomul
 	BR	mul
-	LDA	temp
 	STO	divval
 	LDA	status
 	SUB	001
@@ -91,13 +88,14 @@ divcon	STO	n
 mul	LDA	000
 	STO	temp
 mulst	LDA	count
-	BRZ	eomul
+	BRZ	_eomul
 	SUB	001
 	STO	count
 	LDA	temp
 	ADD	mulval
 	STO	temp
 	BR	mulst
+_eomul	LDA	temp
 eomul	DAT	000
 
 n	DAT
