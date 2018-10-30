@@ -1,0 +1,15 @@
+self	LDA	self
+	ADD	104
+	STO	eofunc
+	BR	func
+	LDA	test
+	OUT
+	HLT
+
+func	LDA	test
+	ADD	104
+	STO	test
+eofunc	DAT	000
+
+104	DAT	104
+test	DAT	000

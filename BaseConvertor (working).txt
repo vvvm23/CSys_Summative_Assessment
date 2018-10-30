@@ -1,0 +1,105 @@
+	IN
+	STO	n
+	IN
+	STO	a
+	IN
+	STO	b
+	
+start	LDA	a
+	STO	mulval
+	STO	count
+r1	LDA	r1
+	ADD	104
+	STO	eomul
+	BR	mul # squares sbase
+r2	LDA	r2
+	ADD	104
+	STO	eodiv
+	BR	div # divides n by ebase**2, count becomes d1
+	LDA	temp
+	STO	mulval # sets mulvalue to sbase**2
+
+r3	LDA	r3
+	ADD	104
+	STO	eomul
+	BR	mul # d1 * base ** 2
+	LDA	temp
+	STO	temp2 # stores d1 * base ** 2 in temporary storage
+	LDA	ebase # load non square base
+	STO	divval
+
+r4	LDA	r4
+	ADD	104
+	STO	eodiv
+	BR	div # divide and get d2
+	LDA	a
+	STO	mulval
+
+r5	LDA	r5
+	ADD	104
+	STO	eomul 
+	BR	mul # multiply d2 * base
+	LDA	temp
+	ADD	temp2 # add d1 * base ** 2
+	ADD	n # add d3
+	STO	n
+
+	LDA	ebase
+	STO	a
+	LDA	b
+	STO	ebase
+	STO	count
+	STO	mulval
+r6	LDA	r6
+	ADD	104
+	STO	eomul
+	BR	mul
+	LDA	temp
+	STO	divval
+	LDA	status
+	SUB	001
+	STO	status
+	BRP	start
+	
+	LDA	n
+	OUT
+001	DAT	001 # HLT
+
+# INT DIV /w REMAINDER #
+div	LDA	000
+	STO	count
+divst	LDA	n
+	SUB	divval
+	BRP	divcon
+eodiv	DAT	000
+divcon	STO	n
+	LDA	count
+	ADD	001
+	STO	count
+	BR	divst
+
+# INT MULT #
+mul	LDA	000
+	STO	temp
+mulst	LDA	count
+	BRZ	eomul
+	SUB	001
+	STO	count
+	LDA	temp
+	ADD	mulval
+	STO	temp
+	BR	mulst
+eomul	DAT	000
+
+n	DAT
+a	DAT
+b	DAT
+divval	DAT	100
+mulval	DAT	
+ebase	DAT	010
+104	DAT	104
+000	DAT	000
+temp	DAT
+temp2	DAT
+count	DAT
+status	DAT	001
