@@ -23,6 +23,22 @@
 # -- Impossible with number of letterboxes remaining. Complete next ToDo first.
 # - Reduce number of letterboxes
 # -- Possible way is to loop similar structures such as mul/div blocks called in main
+# -- Another is to turn the branch jumping preparation steps into a function or append it to the start of mul/div. For example rather than:
+# -- 	r1	LDA	r1
+# --		ADD	104
+# --		STO	eomul
+# --		BR	mul
+# -- Have:
+# -- 	r1	LDA	r1
+# --		BR	mul
+# --	.
+# --	.
+# --	.
+# --	mul	ADD	102
+# --		STO	eomul
+# --	.
+# --	.
+# --	.
 # - Move status variable check if number of letterboxes allows for it in order to reduce number of fetch execute cycles.
 
 # Data dictionary
@@ -50,32 +66,34 @@ r1	LDA	r1
 	ADD	104
 	STO	eomul
 	BR	mul # squares sbase
+
 r2	LDA	r2
 	ADD	104
 	STO	eodiv
 	BR	div # divides n by ebase**2, count becomes d1
+
 	LDA	temp
 	STO	mulval # sets mulvalue to sbase**2
-
 r3	LDA	r3
 	ADD	104
 	STO	eomul
 	BR	mul # d1 * base ** 2
+
 	STO	temp2 # stores d1 * base ** 2 in temporary storage
 	LDA	ebase # load non square base
 	STO	divval
-
 r4	LDA	r4
 	ADD	104
 	STO	eodiv
 	BR	div # divide and get d2
+	
 	LDA	a
 	STO	mulval
-
 r5	LDA	r5
 	ADD	104
 	STO	eomul 
 	BR	mul # multiply d2 * base
+
 	ADD	temp2 # add d1 * base ** 2
 	ADD	n # add d3
 	STO	n
@@ -88,10 +106,12 @@ r5	LDA	r5
 	STO	ebase
 	STO	count # Load mulval and count for squaring
 	STO	mulval
+
 r6	LDA	r6
 	ADD	104
 	STO	eomul
 	BR	mul # Square the base
+
 	STO	divval # Pre-emptively store square of base as division value
 	LDA	status # Load status variable
 	SUB	001
