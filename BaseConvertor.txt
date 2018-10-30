@@ -23,22 +23,6 @@
 # -- Impossible with number of letterboxes remaining. Complete next ToDo first.
 # - Reduce number of letterboxes
 # -- Possible way is to loop similar structures such as mul/div blocks called in main
-# -- Another is to turn the branch jumping preparation steps into a function or append it to the start of mul/div. For example rather than:
-# -- 	r1	LDA	r1
-# --		ADD	104
-# --		STO	eomul
-# --		BR	mul
-# -- Have:
-# -- 	r1	LDA	r1
-# --		BR	mul
-# --	.
-# --	.
-# --	.
-# --	mul	ADD	102
-# --		STO	eomul
-# --	.
-# --	.
-# --	.
 # - Move status variable check if number of letterboxes allows for it in order to reduce number of fetch execute cycles.
 
 # Data dictionary
@@ -63,35 +47,25 @@ start	LDA	a
 	STO	mulval
 	STO	count
 r1	LDA	r1
-	ADD	104
-	STO	eomul
 	BR	mul # squares sbase
 
 r2	LDA	r2
-	ADD	104
-	STO	eodiv
 	BR	div # divides n by ebase**2, count becomes d1
 
 	LDA	temp
 	STO	mulval # sets mulvalue to sbase**2
 r3	LDA	r3
-	ADD	104
-	STO	eomul
 	BR	mul # d1 * base ** 2
 
 	STO	temp2 # stores d1 * base ** 2 in temporary storage
 	LDA	ebase # load non square base
 	STO	divval
 r4	LDA	r4
-	ADD	104
-	STO	eodiv
 	BR	div # divide and get d2
 	
 	LDA	a
 	STO	mulval
 r5	LDA	r5
-	ADD	104
-	STO	eomul 
 	BR	mul # multiply d2 * base
 
 	ADD	temp2 # add d1 * base ** 2
@@ -108,8 +82,6 @@ r5	LDA	r5
 	STO	mulval
 
 r6	LDA	r6
-	ADD	104
-	STO	eomul
 	BR	mul # Square the base
 
 	STO	divval # Pre-emptively store square of base as division value
@@ -123,7 +95,9 @@ r6	LDA	r6
 001	DAT	001 # HLT
 
 # INT DIV /w REMAINDER #
-div	LDA	000
+div	ADD	102
+	STO	eodiv
+	LDA	000
 	STO	count # Reset count
 divst	LDA	n # Load running total
 	SUB	divval # Subtract divval from n
@@ -136,7 +110,9 @@ divcon	STO	n # Update stored n
 	BR	divst # Loop
 
 # INT MULT #
-mul	LDA	000 
+mul	ADD	102
+	STO	eomul
+	LDA	000 
 	STO	temp # Reset temp value
 mulst	LDA	count # Load count
 	BRZ	_eomul # If count is zero exit
@@ -158,9 +134,10 @@ divval	DAT # Stores value to subtract each loop during division
 010	DAT	010 # Simply stores value 010
 mulval	DAT	# Stores value to add each loop during multiplication
 ebase	DAT	# End base, current target base to convert to.
-104	DAT	104 # Branch return point offset
+102	DAT	102 # Branch return point offset
 000	DAT	000 # Simply stores value 000
 temp	DAT	# A temporary data location.
 temp2	DAT # A second temporary data location. Could perhaps be replaced by n?
 count	DAT # Integer result of division operation and also number of loops remaining during multiplication operation.
 status	DAT	001 # Stores number of master loops + 1 to run.
+
