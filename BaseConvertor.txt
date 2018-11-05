@@ -132,19 +132,20 @@ _eomul	LDA	temp # Load temp into accumulator (saves lines later)
 eomul	DAT	000 # Return to branch point
 
 # Variable list
-n	DAT # Stores initial value, div remainder and final output
-a	DAT # Stores starting base and later becomes a psuedo 'sbase' (to the ebase)
-b	DAT # Stores final ending base.
-divval	DAT # Stores value to subtract each loop during division
-100	DAT	100 # Simply stores value 100
-010	DAT	010 # Simply stores value 010
-mulval	DAT	# Stores value to add each loop during multiplication
-ebase	DAT	# End base, current target base to convert to.
-102	DAT	102 # Branch return point offset
-000	DAT	000 # Simply stores value 000
-temp	DAT	# A temporary data location.
-temp2	DAT # A second temporary data location. Could perhaps be replaced by n?
-count	DAT # Integer result of division operation and also number of loops remaining during multiplication operation.
-status	DAT	001 # Stores number of master loops + 1 to run.
+n	DAT 		# Stores initial value, div remainder and final output
+a	DAT 		# Stores starting base and later becomes a psuedo 'sbase' (to the ebase)
+b	DAT 		# Stores final ending base.
+divval	DAT 		# Stores value to subtract each loop during division
+100	DAT	100 	# Simply stores value 100
+010	DAT	010 	# Simply stores value 010
+mulval	DAT		# Stores value to add each loop during multiplication
+ebase	DAT		# End base, current target base to convert to.
+102	DAT	102 	# Branch return point offset
+000	DAT	000 	# Simply stores value 000
+temp	DAT		# A temporary data location.
+temp2	DAT 		# A second temporary data location. Could perhaps be replaced by n?
+count	DAT 		# Integer result of division operation and also number of loops remaining during multiplication operation.
+status	DAT	001 	# Stores number of master loops + 1 to run.
 overf	DAT
 999	DAT	999
+
