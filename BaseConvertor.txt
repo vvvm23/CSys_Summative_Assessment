@@ -39,6 +39,7 @@
 	IN # Take in n, a, b as inputs
 	STO	n
 	IN
+	BRZ	err
 	STO	a
 	IN
 	STO	b
@@ -107,6 +108,8 @@ divcon	STO	n # Update stored n
 	LDA	count 
 	ADD	001 # Increment count
 	STO	count
+	SUB	a
+	BRZ	err
 	BR	divst # Loop
 
 # INT MULT #
@@ -123,7 +126,7 @@ mulst	LDA	count # Load count
 	STO	temp
 	SUB	mulval
 	BRP	overfg
-	LDA	999
+err	LDA	999
 	BR	out
 overfg	BR	mulst # Loop
 _eomul	LDA	temp # Load temp into accumulator (saves lines later)
@@ -145,4 +148,3 @@ temp2	DAT 		# A second temporary data location. Could perhaps be replaced by n?
 count	DAT 		# Integer result of division operation and also number of loops remaining during multiplication operation.
 status	DAT	001 	# Stores number of master loops + 1 to run.
 999	DAT	999
-
