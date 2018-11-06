@@ -120,14 +120,12 @@ mulst	LDA	count # Load count
 	STO	count # Decrement count
 	LDA	temp 
 	ADD	mulval
-	STO	overf
-	SUB	temp
+	STO	temp
+	SUB	mulval
 	BRP	overfg
 	LDA	999
 	BR	out
-overfg	LDA	overf
-	STO	temp # Increment temp by mulval
-	BR	mulst # Loop
+overfg	BR	mulst # Loop
 _eomul	LDA	temp # Load temp into accumulator (saves lines later)
 eomul	DAT	000 # Return to branch point
 
@@ -146,6 +144,5 @@ temp	DAT		# A temporary data location.
 temp2	DAT 		# A second temporary data location. Could perhaps be replaced by n?
 count	DAT 		# Integer result of division operation and also number of loops remaining during multiplication operation.
 status	DAT	001 	# Stores number of master loops + 1 to run.
-overf	DAT
 999	DAT	999
 
