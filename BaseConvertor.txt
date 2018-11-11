@@ -9,23 +9,11 @@
 # 6) Take first integer division result and multiply by 100. Then take second and multiply by 10. Sum up the products and the final remainder.
 # 7) Output the final sum.
 
-# Possible sources of errors #
-# - Overflow in addition operation
-# - A base larger than 10 or smaller than 2 being entered
-# - A n that results in an output that cannot be display in 3 digits
 
 # Further Detail on critical aspects
 # - Branch returns:
-# -- By loading current memory location and then adding 104 (to point to return point and also to offset LDA instruction opcode) and storing this result in DAT at the end of a 'function' the program will jump back to just after where it was called allowing for 'functions' to be reused to save on lines.
+# -- By loading current memory location and then adding 102 (to point to return point and storing this result in DAT at the end of a 'function' the program will jump back to just after where it was called allowing for 'functions' to be reused to save on lines.
 
-# To do:
-# - Deal with errors detailed before
-# -- Impossible with number of letterboxes remaining. Complete next ToDo first.
-# - Reduce number of letterboxes
-# -- Possible way is to loop similar structures such as mul/div blocks called in main
-# - Move status variable check if number of letterboxes allows for it in order to reduce number of fetch execute cycles.
-
-# Data dictionary
 # Variables names detailed at end of program.
 
 # CODE BEGINS HERE #
@@ -105,11 +93,15 @@ divst	LDA	n # Load running total
 	BRP	divcon # If negative then exit
 eodiv	DAT	000 # Return to branch point
 divcon	STO	n # Update stored n
+
+	# If possible Sub a here. Branch if positive to check d3 is < base #
+	# Two boxes required. #
+
 	LDA	count 
 	ADD	001 # Increment count
 	STO	count
 	SUB	a
-	BRZ	err
+	BRP	err
 	BR	divst # Loop
 
 # INT MULT #
@@ -147,4 +139,4 @@ temp	DAT		# A temporary data location.
 temp2	DAT 		# A second temporary data location. Could perhaps be replaced by n?
 count	DAT 		# Integer result of division operation and also number of loops remaining during multiplication operation.
 status	DAT	001 	# Stores number of master loops + 1 to run.
-999	DAT	999
+999	DAT	999	# Simply stores value 999 as an error code.
