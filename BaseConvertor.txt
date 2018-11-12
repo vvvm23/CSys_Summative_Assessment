@@ -97,8 +97,8 @@ divcon	STO	n # Update stored n
 	LDA	count 
 	ADD	001 # Increment count
 	STO	count
-	SUB	a
-	BRP	err
+	SUB	a # Subtract base
+	BRP	err # If count > base then error. Branch to err.
 	BR	divst # Loop
 
 # INT MULT #
@@ -113,9 +113,9 @@ mulst	LDA	count # Load count
 	LDA	temp 
 	ADD	mulval
 	STO	temp
-	SUB	mulval
-	BRP	overfg
-err	LDA	999
+	SUB	mulval # Overflow handler
+	BRP	overfg # If postive, overflow is not present
+err	LDA	999 # Else output 999 and branch to output
 	BR	out
 overfg	BR	mulst # Loop
 _eomul	LDA	temp # Load temp into accumulator (saves lines later)
