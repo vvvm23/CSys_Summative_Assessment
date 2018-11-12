@@ -21,7 +21,6 @@
 	STO	ebase
 	LDA	100
 	STO	divval
-	LDA	001
 	STO	status
 
 	IN # Take in n, a, b as inputs
@@ -51,7 +50,11 @@ r3	LDA	r3
 	STO	divval
 r4	LDA	r4
 	BR	div # divide and get d2
-	
+		
+	#LDA	n
+	#SUB	ebase
+	#BRP	err
+
 	LDA	a
 	STO	mulval
 r5	LDA	r5
@@ -60,8 +63,6 @@ r5	LDA	r5
 	ADD	temp2 # add d1 * base ** 2
 	ADD	n # add d3
 	STO	n
-	
-# Move status check here to save cycles #
 
 	LDA	ebase
 	STO	a # Swap start and end bases
@@ -75,9 +76,9 @@ r6	LDA	r6
 
 	STO	divval # Pre-emptively store square of base as division value
 	LDA	status # Load status variable
-	SUB	001
+	SUB	100
 	STO	status
-	BRP	start # If status negative the end
+	BRP	start # If status negative, branch to the end
 	
 	LDA	n
 out	OUT # Output n
@@ -93,10 +94,6 @@ divst	LDA	n # Load running total
 	BRP	divcon # If negative then exit
 eodiv	DAT	000 # Return to branch point
 divcon	STO	n # Update stored n
-
-	# If possible Sub a here. Branch if positive to check d3 is < base #
-	# Two boxes required. #
-
 	LDA	count 
 	ADD	001 # Increment count
 	STO	count
