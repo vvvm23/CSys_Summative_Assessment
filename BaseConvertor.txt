@@ -17,21 +17,21 @@
 # Variables names detailed at end of program.
 
 # CODE BEGINS HERE #
+	IN # Take in n, a, b as inputs
+	STO	n
+	IN
+#	BRZ	err
+	STO	a
+	IN
+	STO	b
+
 	LDA	010 # Load default values for certain variables to allow for restart without recompiling
 	STO	ebase
 	LDA	100
 	STO	divval
-	STO	status
-
-	IN # Take in n, a, b as inputs
-	STO	n
-	IN
-	BRZ	err
-	STO	a
-	IN
-	STO	b
 	
-start	LDA	a 
+start	STO	status
+	LDA	a 
 	STO	mulval
 	STO	count
 r1	LDA	r1
@@ -51,9 +51,9 @@ r3	LDA	r3
 r4	LDA	r4
 	BR	div # divide and get d2
 		
-	#LDA	n
-	#SUB	ebase
-	#BRP	err
+	LDA	n
+	SUB	a
+	BRP	err
 
 	LDA	a
 	STO	mulval
@@ -77,7 +77,6 @@ r6	LDA	r6
 	STO	divval # Pre-emptively store square of base as division value
 	LDA	status # Load status variable
 	SUB	100
-	STO	status
 	BRP	start # If status negative, branch to the end
 	
 	LDA	n
