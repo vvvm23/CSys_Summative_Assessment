@@ -51,9 +51,9 @@ r3	LDA	r3
 r4	LDA	r4
 	BR	div # divide and get d2
 		
-	LDA	n
-	SUB	a
-	BRP	err
+	#LDA	n
+	#SUB	a
+	#BRP	err
 
 	LDA	a
 	STO	mulval
@@ -96,8 +96,13 @@ divcon	STO	n # Update stored n
 	LDA	count 
 	ADD	001 # Increment count
 	STO	count
-	SUB	a # Subtract base
-	BRP	err # If count > base then error. Branch to err.
+	SUB	a 	# Subtract sbase
+	BRP	err 	# If positive raise error
+
+	LDA	count	# Reload count again
+	SUB	ebase	# Subtract ebase
+	BRP	err	# Again, if positive raise error
+
 	BR	divst # Loop
 
 # INT MULT #
